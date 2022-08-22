@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:purchase/purchace/purchase_home.dart';
 
+double  DeleteTotal=0;
+double  Gtotal=0;
 class MylistDynamics extends StatefulWidget {
   const MylistDynamics({Key? key}) : super(key: key);
 
@@ -11,6 +13,8 @@ class MylistDynamics extends StatefulWidget {
 
 class _MylistDynamicsState extends State<MylistDynamics> {
 
+    List<double>GtotalList=[];
+    double Sum=0;
   String _paycompany_name = 'Select company';
   List<String> _paycompanyList = [
     'Select company', 'WE 2 CO LTD', 'AFRICA FISH CO', 'DOLFEN FRONZEN', 'NORTH SOUTH', 'OCEAN FARE', 'MR YEBOAH', 'MARANATHA', 'KUMASI DOMFE'
@@ -21,7 +25,7 @@ class _MylistDynamicsState extends State<MylistDynamics> {
 
   addDynamic(){
     setState((){
-      ListDynamic.add(DynamicWidget(GoundTotal: _price.text));
+      ListDynamic.add(DynamicWidget());
     });
     
   }
@@ -95,8 +99,11 @@ class _MylistDynamicsState extends State<MylistDynamics> {
                  ],
                ),
               Flexible(child: ListView.builder(
+
+
                 itemCount:ListDynamic.length,
                   itemBuilder: (_,index)=>ListDynamic[index])),
+             // addDynamic(),
 Container(
   width:MediaQuery.of(context).size.width,
   height: 70,
@@ -106,7 +113,9 @@ Container(
         padding: const EdgeInsets.all(8.0),
         child: Align(
           alignment: Alignment.bottomLeft,
-          child: FloatingActionButton(onPressed: DeleteData,
+          child: FloatingActionButton(onPressed: (){DeleteData();
+            DeleteTotal;
+            },
             child: Icon(Icons.delete,color: Colors.red,size: 40.0,),
           ),
         ),
@@ -114,8 +123,11 @@ Container(
       Padding(
         padding: const EdgeInsets.only(left: 220),
         child: FloatingActionButton(
-          onPressed:addDynamic,
+          onPressed:(){
+            addDynamic();
+            },
           child: Icon(Icons.add,color: Colors.white, size: 50,),
+
         ),
       ),
     ],
@@ -126,9 +138,11 @@ Container(
 
               Container(
                 width: MediaQuery.of(context).size.width,
-                height:90,
+                height:200,
                 decoration: BoxDecoration(
-                  border: Border.all(),
+
+                  color: Colors.black12,
+                  border: Border.all(width: 6),
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
                 child: Row(
@@ -137,23 +151,76 @@ Container(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Text('TOTAL',style: TextStyle(fontWeight: FontWeight.bold),),
-                          Container(
-                            width: 150,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.all(Radius.circular(4))
-                            ),
-                            child: Row(
-                              children: [Text('GH¢'),Text("${[4]}")],
-                            ),
+                          Row(
+                            children: [
+                              Text('TOTAL      ',style: TextStyle(fontWeight: FontWeight.bold),),
+                              Container(
+                                width: 150,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    border: Border.all(),
+                                    borderRadius: BorderRadius.all(Radius.circular(4))
+                                ),
+                                child: Row(
+                                  // To display Gtoal
+                                  //////////////////////////////////////////////////////////////////////////////////////////
+                                  children: [Text('GH¢'+"${Gtotal}")],
+                                ),
+                              ),
+                            ],
                           ),
+                          Row(
+                            children: [
+                              Text('PAYMENT',style: TextStyle(fontWeight: FontWeight.bold),),
+                              Container(
+                                width: 150,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    border: Border.all(),
+                                    borderRadius: BorderRadius.all(Radius.circular(4))
+                                ),
+                                child: TextField()
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text('BALANCE',style: TextStyle(fontWeight: FontWeight.bold),),
+                              Container(
+                                width: 150,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    border: Border.all(),
+                                    borderRadius: BorderRadius.all(Radius.circular(4))
+                                ),
+                                child: Row(
+                                  children: [Text('GH¢')],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text('WAYBILL  ',style: TextStyle(fontWeight: FontWeight.bold),),
+                              Container(
+                                width: 150,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    border: Border.all(),
+                                    borderRadius: BorderRadius.all(Radius.circular(4))
+                                ),
+                                child: TextField(
+
+                                )
+                              ),
+                            ],
+                          ),
+
                         ],
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 70.0),
+                      padding: const EdgeInsets.only(left: 30.0),
                       child: ElevatedButton(onPressed: null, child:Text('SAVE')),
                     )
                   ],
@@ -167,9 +234,9 @@ Container(
   }
 }
 class DynamicWidget extends StatefulWidget {
-  double GoundTotal;
 
-   DynamicWidget({Key? key,required this.GoundTotal }) : super(key: key);
+
+   DynamicWidget({Key? key,}) : super(key: key);
 
   @override
   State<DynamicWidget> createState() => _DynamicWidgetState();
@@ -184,10 +251,12 @@ class _DynamicWidgetState extends State<DynamicWidget> {
    TextEditingController _price =TextEditingController();
    TextEditingController _qnty =TextEditingController();
    TextEditingController _total =TextEditingController();
-   double _priceValue=0;
-   double _qntyValue=0;
-   double _totalValue=0;
-   double  GoundTotal=0;
+
+  double _totalValue=0;
+  double _priceValue=0;
+  double _qntyValue=0;
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -256,9 +325,11 @@ class _DynamicWidgetState extends State<DynamicWidget> {
                         if(value.isEmpty){
                           _qntyValue=0;
                           _totalValue=0;
+                          Gtotal=0;
                         }else{
                           _qntyValue = double.parse(value);
                           _totalValue=_qntyValue * _priceValue;
+                          Gtotal=Gtotal+_totalValue;
                         }
 
                       });
@@ -291,15 +362,15 @@ class _DynamicWidgetState extends State<DynamicWidget> {
                         if(value.isEmpty){
                           _priceValue=0;
                           _totalValue=0;
+                          Gtotal=0;
                         }else{
                           _priceValue = double.parse(value);
                           _totalValue=_qntyValue * _priceValue;
+                          Gtotal=Gtotal+_totalValue;
+                          DeleteTotal=Gtotal-_totalValue;
 
 
                         }
-                        setState((){
-                         GoundTotal=_totalValue;
-                        });
                       });
                     },
 
